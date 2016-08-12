@@ -6,7 +6,7 @@
 NSArray *data = @[@"1",@"2",@"3",@"4"];
 
 //each 遍历 -- output 1 2 3 4
-[datas each:^(id obj) {
+[datas forEach:^(id obj) {
 	NSLog(@"%@",obj);
 }];
 
@@ -15,7 +15,7 @@ NSArray *data = @[@"1",@"2",@"3",@"4"];
 	NSLog(@"%@",obj);
 }];
 
-//eachTimes遍历 -- output 1:0 2:1 3:2 4:3
+//eachTimes遍历 带数组索引 -- output 1:0 2:1 3:2 4:3
 [datas eachTimes:^(id obj, NSUInteger index) {
  	NSLog(@"%@:%ld",obj, index);
 }];
@@ -55,7 +55,7 @@ id result =
 NSLog(@"%@",result);
 
 //将数组中字符串用某个字符聚合 -- output @"1:2:3:4"
-NSString *resultStr = [datas implode:@":"];
+NSString *resultStr = [datas join:@":"];
 NSLog(@"%@",resultStr);
 
 //二维矩阵转置 -- output [[1,5,9],[2,6,10],[3,7,11],[4,8,12]]
@@ -99,22 +99,25 @@ NSLog(@"%@",[NSArray turn:matrix]);
 NSLog(@"%@",[NSNumber numberByString:@"12"]);
 
 //NSNumber整数相加 output -- @32
-NSLog(@"%@",[@12 OperaInt:@20 type:BNAdd]);
+NSLog(@"%@",@12.add(@20));
 
 //NSNumber浮点数相加 output -- @32.1
-NSLog(@"%@",[@12 OperaFloat:@20.1 type:BNAdd]);
+NSLog(@"%@",@12.add(@20.1));
+
+//NSNumber链式操作  output -- 8.666666
+NSLog(@"%@",(@12).add(@1).mul(@2).div(@3.0));
 ```
 
 ##NSString
 ```objc
 //去掉两端空格 output -- 123
-NSLog(@"%@",[@" 123 " stringByTrim]);
+NSLog(@"%@",@" 123 ".trim());
 
 //以某个字符拆分字符串 output -- [1,2,3]
-NSLog(@"%@",[@"1,2,3" explode:@","]);
+NSLog(@"%@",@"1,2,3".split(@","));
 
 //将字符串中的某个字符替换 output -- 1=2=3
-NSLog(@"%@",[@"1,2,3" replace:@"," to:@"="]);
+NSLog(@"%@",@"1,2,3".replace(@",",@"="));
 
 //拼接字符串 output -- xiaos.hello
 NSLog(@"%@",@"xiaos".append(@",").append(@"xiaos"));
@@ -145,15 +148,68 @@ UIButton *btn = [[UIButton alloc]init];
 	NSLog(@"hello");
 }];
 ```
+
+###UIView
+```objc
+
+```
+
 ##NSObject
 ```objc
+//KVO的闭包实现
+Person *p = [[Person alloc] initWithName:@"xiaos"];
+//监听p.name的改变 此观察者自动释放 若需提前释放 [p unWatchForKeyPath:@"name"] 全部释放[p unWathAll]
+[p watchForKeyPath:@"name" block:^(id obj, id oldVal, id newVal) {
+       NSLog(@"%@:%@",oldVal,newVal); 
+    }];
+   
+
 //用运行时为Object绑定了一个字典属性，用于在一些场景下的多参数传值。例如：
 UIButton *btn = [[UIButton alloc] init];
-[btn setExtraInfo:@{@"name":@"xiaos"}];
+btn.extraInfo = @{@"name":@"xiaos"};
 [bnt onClick:(^id sender){
 	NSLog(@"%@",[sender extraInfo][@"name"]);
 }];
 //output @"xiaos"
+
+//控制器间跳转时
+HomeViewController *homeVC = [HomeViewController new];
+homeVC.extraInfo = @{@"name":@"xiaos",@"age":@"20"};
+[self.navigationController pushViewController:homeVC animated:YES];
+//在homeVC中即可取extraInfo获取传过来的信息
+NSLog(@"%@",self.extraInfo[@"name"]); //输出 xiaos
+
+
+//模仿css的ID选择器
+//在controller或者view中 避免在控制器或者View中新建属性
+//将btn按钮添加到self的管理中
+UIButton *btn = [UIButton new];
+[self setView:btn byId:@"#dateBtn"];
+
+//在其他地方引用
+UIButton *btn = [self viewById:@"#dateBtn"];
+
+//todo：模仿css的类选择器 增加一组同类型控件的管理
+
 ```
+
+##DEV 实验性特性
+###UILabel
+```objc
+//模仿css 通过设置键值对属性来定义控件样式 
+//对于数值的NSString NSNumber，颜色的UIColor 十六进制 RGB都做容错处理，尽量兼容css的属性。 
+//定位布局属性暂时不做支持
+UILabel *label = [UILabel cssLabel:@{
+@"text":@"hello world",
+@"color":@"red",
+@"font-size":@"17",
+@"background-color":@"#aabbcc",
+@"border-color":@"RGB(10,20,30)",
+@"border-width":@1,
+@"border-raduis":@"3"
+}];
+
+```
+
 
 
