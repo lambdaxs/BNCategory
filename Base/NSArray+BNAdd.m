@@ -179,7 +179,7 @@
         
         NSMutableArray *arr = [NSMutableArray arrayWithArray:self];
         [argArr forEach:^(id obj) {
-            if (NSObject.isArray(obj)) {
+            if ([NSObject isArray:obj]) {
                 [arr addObjectsFromArray:obj];
             }else {
                 [arr addObject:obj];

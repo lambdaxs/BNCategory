@@ -241,52 +241,37 @@ static void * deallocHasSwizzledKey = "deallocHasSwizzledKey";
 }
 
 #pragma mark - TYPE
-
-+ (BOOL (^)(id obj))isStr{
-    return ^BOOL (id obj){
-        return self.isType(obj,[NSString class]) || self.isType(obj,[NSMutableString class]);
-    };
++ (BOOL)isStr:(id)obj {
+    return [self isType:obj class:[NSString class]] || [self isType:obj class:[NSMutableString class]];
 }
 
-+ (BOOL (^)(id obj))isNumber{
-    return ^BOOL (id obj){
-        return self.isType(obj,[NSNumber class]);
-    };
++ (BOOL)isNumber:(id)obj {
+    return [self isType:obj class:[NSNumber class]];
 }
 
-+ (BOOL (^)(id obj))isArray {
-    return ^BOOL (id obj){
-        return self.isType(obj,[NSArray class]) || self.isType(obj,[NSMutableArray class]);
-    };
++ (BOOL)isArray:(id)obj {
+    return [self isType:obj class:[NSArray class]] || [self isType:obj class:[NSMutableArray class]];
 }
 
-+ (BOOL (^)(id obj))isDict {
-    return ^BOOL (id obj){
-        return self.isType(obj,[NSDictionary class]) || self.isType(obj,[NSMutableDictionary class]);
-    };
++ (BOOL)isDict:(id)obj {
+    return [self isType:obj class:[NSDictionary class]] || [self isType:obj class:[NSMutableDictionary class]];
 }
 
-+ (BOOL (^)(id obj))isSet {
-    return ^BOOL (id obj){
-        return self.isType(obj,[NSSet class]) || self.isType(obj,[NSMutableSet class]);
-    };
++ (BOOL)isSet:(id)obj {
+    return [self isType:obj class:[NSSet class]] || [self isType:obj class:[NSMutableSet class]];
 }
 
-+ (BOOL (^)(id obj))isNull {
-    return ^BOOL (id obj){
-        if ([obj isKindOfClass:[NSString class]]) {
-            if ([obj isEqualToString:@"nil"]||[obj isEqualToString:@"null"]||[obj isEqualToString:@"<null>"]) {
-                return YES;
-            }
++ (BOOL)isNull:(id)obj {
+    if ([obj isKindOfClass:[NSString class]]) {
+        if ([obj isEqualToString:@"nil"]||[obj isEqualToString:@"null"]||[obj isEqualToString:@"<null>"]) {
+            return YES;
         }
-        return self.isType(obj,[NSNull class]);
-    };
+    }
+    return [self isType:obj class:[NSNull class]];
 }
 
-+ (BOOL (^)(id obj,Class c))isType{
-    return ^BOOL (id obj, Class c){
-        return [obj isKindOfClass:c];
-    };
++ (BOOL)isType:(id)obj class:(Class)c {
+    return [obj isKindOfClass:c];
 }
 
 @end

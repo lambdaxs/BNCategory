@@ -26,11 +26,11 @@
 - (void)unWathAll;
 
 #pragma mark - typeResult 
-+ (BOOL (^)(id obj))isStr;
-+ (BOOL (^)(id obj))isNumber;
-+ (BOOL (^)(id obj))isArray;
-+ (BOOL (^)(id obj))isDict;
-+ (BOOL (^)(id obj))isSet;
-+ (BOOL (^)(id obj))isNull;
-+ (BOOL (^)(id obj,Class c))isType;
++ (BOOL)isStr:(id)obj;
++ (BOOL)isNumber:(id)obj;
++ (BOOL)isArray:(id)obj;
++ (BOOL)isDict:(id)obj;
++ (BOOL)isSet:(id)obj;
++ (BOOL)isNull:(id)obj;
++ (BOOL)isType:(id)obj class:(Class)c;
 @end

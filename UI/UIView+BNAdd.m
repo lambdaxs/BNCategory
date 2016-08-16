@@ -124,7 +124,7 @@ static const int BONC_BLOCK_VIEW_KEY;
     UIColor *color;
     if ([obj isKindOfClass:[UIColor class]]){
         color = obj;
-    }else if(NSObject.isStr(obj)){
+    }else if([NSObject isStr:obj]){
         color = [obj colorByStr];
     }else {
         color = defalut;
@@ -133,7 +133,7 @@ static const int BONC_BLOCK_VIEW_KEY;
 }
 
 + (NSUInteger)matchAlign:(id)align {
-    if (!NSObject.isStr(align)) return 0;
+    if (![NSObject isStr:align]) return 0;
     
     NSUInteger alignment = 0;
     if (align) {
@@ -163,9 +163,9 @@ static const int BONC_BLOCK_VIEW_KEY;
 }
 
 + (NSString *)matchText:(id)text {
-    if (text && NSObject.isStr(text)) {
+    if (text && [NSObject isStr:text]) {
         return text;
-    }else if (NSObject.isNumber(text)){
+    }else if ([NSObject isNumber:text]){
         return [text stringValue];
     }else {
         return @"未定义";
@@ -173,9 +173,9 @@ static const int BONC_BLOCK_VIEW_KEY;
 }
 
 + (CGFloat)matchFloatValue:(id)num {
-    if (num && NSObject.isNumber(num)) {
+    if (num && [NSObject isNumber:num]) {
         return [num floatValue];
-    }else if (NSObject.isStr(num)){
+    }else if ([NSObject isStr:num]){
         return [num floatValue];
     }else {
         return 0.f;
