@@ -6,23 +6,29 @@
 #import <Foundation/Foundation.h>
 
 @interface NSObject (BNAdd)
+
+#pragma mark - 一般用户对象间传值
 - (void)setExtraInfo:(NSDictionary *)dict;
 - (NSDictionary *)extraInfo;
 
-- (void)setId:(NSString *)id;
-- (NSString *)id;
+#pragma mark - 为该对象设置id
+- (void)setIdStr:(NSString *)idStr;
+- (NSString *)idStr;
 
+#pragma mark - 为该对象设置className
+//todo
+//- (void)setClassName:(NSString *)className;
+//- (NSString *)className;
+
+#pragma mark - 为对象增加视图管理
 - (void)setExtraView:(NSMutableDictionary *)dict;
 - (NSMutableDictionary *)extraView;
-
 - (void)setView:(id)view byId:(NSString *)idStr;
 - (id)viewById:(NSString *)idStr;
 
 #pragma mark - KVO
 - (void)watchForKeyPath:(NSString *)keyPath block:(void(^)(id obj, id oldVal, id newVal))block;
-
 - (void)unWatchForKeyPath:(NSString *)keyPath;
-
 - (void)unWathAll;
 
 #pragma mark - typeResult 
