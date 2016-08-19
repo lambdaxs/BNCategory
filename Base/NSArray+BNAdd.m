@@ -31,7 +31,7 @@
 
 - (BOOL)every:(BOOL (^)(id))block {
     __block BOOL isEevery = YES;
-    [self apply:^(id obj) {
+    [self asynEach:^(id obj) {
         if(!block(obj)){
             isEevery = NO;
             return;
@@ -42,7 +42,7 @@
 
 - (BOOL)some:(BOOL(^)(id obj))block {
     __block BOOL isSome = NO;
-    [self apply:^(id obj) {
+    [self asynEach:^(id obj) {
         if(block(obj)){
             isSome = YES;
             return;
@@ -65,19 +65,19 @@
     }];
 }
 
-- (void)eachTimes:(void (^)(id obj, NSUInteger index))block {
+- (void)forEachWithIndex:(void (^)(id obj, NSUInteger index))block {
     [self enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         block(obj,idx);
     }];
 }
 
-- (void)reverseEachTimes:(void (^)(id obj, NSUInteger index))block {
+- (void)reverseEachWithIndex:(void (^)(id obj, NSUInteger index))block {
     [self enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         block(obj,idx);
     }];
 }
 
-- (void)apply:(void (^)(id))blcok{
+- (void)asynEach:(void (^)(id obj))blcok {
     [self enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         blcok(obj);
     }];
@@ -91,7 +91,18 @@
             id result = block(obj)?:[NSNull null];
             [arr addObject:result];
         }];
-        return arr;
+        return [arr copy];
+    };
+}
+
+- (NSArray *(^)(id (^)(id,NSUInteger)))mapWithIndex {
+    return ^(id (^block)(id,NSUInteger)) {
+        NSMutableArray *arr = [NSMutableArray arrayWithCapacity:self.count];
+        [self forEachWithIndex:^(id obj, NSUInteger index) {
+            id result = block(obj,index)?:[NSNull null];
+            [arr addObject:result];
+        }];
+        return [arr copy];
     };
 }
 
@@ -103,7 +114,19 @@
                 [arr addObject:obj];
             }
         }];
-        return arr;
+        return [arr copy];
+    };
+}
+
+- (NSArray *(^)(BOOL (^)(id obj,NSUInteger index)))filterWithIndex {
+    return ^NSArray *(BOOL (^block)(id obj,NSUInteger index)){
+        NSMutableArray *arr = [NSMutableArray arrayWithCapacity:self.count];
+        [self forEachWithIndex:^(id obj, NSUInteger index) {
+            if (block(obj,index)) {
+                [arr addObject:obj];
+            }
+        }];
+        return [arr copy];
     };
 }
 
@@ -189,22 +212,26 @@
     };
 }
 
-- (NSUInteger (^)(id))indexOf {
-    return ^(id obj){
-        return [self indexOfObject:obj];
-    };
+- (BOOL)has:(id)obj {
+    return [self containsObject:obj];
 }
 
-- (NSUInteger (^)(id))lastIndexOf {
-    return ^(id obj){
-        return [self.reverse() indexOfObject:obj];
-    };
+- (NSInteger)indexOf:(id)obj {
+    if (![self containsObject:obj]) {//不在数组中
+        return -1;
+    }
+    return (NSInteger)[self indexOfObject:obj];
 }
 
-- (NSDictionary *)object{
+- (NSInteger)lastIndexOf:(id)obj {
+    return [self.reverse() indexOfObject:obj];
+}
+
+- (NSDictionary *)toDictionary{
     NSArray<NSString *> *keys = self[0];
-    NSArray *value = self[1];
-    return [NSDictionary dictionaryWithObjects:value forKeys:keys];
+    NSArray *values = self[1];
+    NSAssert(keys.count != values.count, @"keys.count != values.count");
+    return [NSDictionary dictionaryWithObjects:values forKeys:keys];
 }
 
 @end

@@ -22,27 +22,30 @@
 //遍历操作
 //正序遍历
 - (void)forEach:(void (^)(id obj))block;
-- (void)eachTimes:(void (^)(id obj, NSUInteger index))block;
+- (void)forEachWithIndex:(void (^)(id obj, NSUInteger index))block;
 
 //反序遍历
-- (void)reverseEach:(void (^)(id))block;
-- (void)reverseEachTimes:(void (^)(id obj, NSUInteger index))block;
+- (void)reverseEach:(void (^)(id obj))block;
+- (void)reverseEachWithIndex:(void (^)(id obj, NSUInteger index))block;
 
 //异步遍历
-- (void)apply:(void (^)(id obj))blcok;
+- (void)asynEach:(void (^)(id obj))blcok;
+
 //every
 - (BOOL)every:(BOOL (^)(id obj))block;
 //some
 - (BOOL)some:(BOOL(^)(id obj))block;
 
 //map
-- (NSArray *(^)(id (^)(id)))map;
+- (NSArray *(^)(id (^)(id obj)))map;
+- (NSArray *(^)(id (^)(id obj,NSUInteger index)))mapWithIndex;
+
 //filter
 - (NSArray *(^)(BOOL (^)(id obj)))filter;
+- (NSArray *(^)(BOOL (^)(id obj,NSUInteger index)))filterWithIndex;
 
 //reduce
 - (id)reduce:(id)init with:(id (^)(id a, id b))blcok;
-
 - (id)reduceRight:(id)init with:(id (^)(id, id))blcok;
 
 //聚合数组中的字符串
@@ -52,12 +55,14 @@
 - (NSArray *(^)(id,...))concat;
 
 //索引
-- (NSUInteger (^)(id))indexOf;
+- (BOOL)has:(id)obj;
 
-- (NSUInteger (^)(id))lastIndexOf;
+- (NSInteger)indexOf:(id)obj;
+
+- (NSInteger)lastIndexOf:(id)obj;
 
 //数组转字典@[@[keys],@[values]] => @{key1:@value1,...}
-- (NSDictionary *)object;
+- (NSDictionary *)toDictionary;
 
 @end
 

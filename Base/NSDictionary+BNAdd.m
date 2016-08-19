@@ -7,7 +7,7 @@
 
 @implementation NSDictionary (BNAdd)
 
-- (void)each:(void(^)(id key, id value))block {
+- (void)forEach:(void(^)(id key, id value))block {
     [self enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
         block(key, obj);
     }];
@@ -15,22 +15,22 @@
 
 - (NSDictionary *)map:(id (^)(id key, id value))block {
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:self.count];
-    [self each:^(id key, id value) {
+    [self forEach:^(id key, id value) {
         id result = block(key,value);
         dict[key] = result;
     }];
-    return dict;
+    return [dict copy];
 }
 
 - (NSDictionary *)filter:(BOOL (^)(id key, id value))block {
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:self.count];
     
-    [self each:^(id key, id value) {
+    [self forEach:^(id key, id value) {
         if (block(key, value)) {
             dict[key] = value;
         }
     }];
-    return dict;
+    return [dict copy];
 }
 
 - (NSArray *)orderValuesByKeys:(NSArray *)orderKeys {
@@ -42,7 +42,7 @@
         }
         [result addObject:self[orderKeys[i]]];
     }
-    return (NSArray *)result;
+    return [result copy];
 }
 
 @end

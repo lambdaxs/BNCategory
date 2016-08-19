@@ -7,7 +7,7 @@
 
 @interface NSDictionary (BNAdd)
 
-- (void)each:(void(^)(id key, id value))block;
+- (void)forEach:(void(^)(id key, id value))block;
 
 - (NSDictionary *)map:(id (^)(id key, id value))block;
 

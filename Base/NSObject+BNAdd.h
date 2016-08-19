@@ -12,8 +12,8 @@
 - (NSDictionary *)extraInfo;
 
 #pragma mark - 为该对象设置id
-- (void)setIdStr:(NSString *)idStr;
-- (NSString *)idStr;
+//- (void)setIdStr:(NSString *)idStr;
+//- (NSString *)idStr;
 
 #pragma mark - 为该对象设置className
 //todo

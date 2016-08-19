@@ -3,34 +3,40 @@
 
 ##NSArray
 ```objc
-NSArray *data = @[@"1",@"2",@"3",@"4"];
 
-//each 遍历 -- output 1 2 3 4
-[datas forEach:^(id obj) {
+
+//forEach 遍历 -- output 1 2 3 4
+NSArray *data = @[@"1",@"2",@"3",@"4"];
+[data forEach:^(id obj) {
 	NSLog(@"%@",obj);
 }];
 
 //reverseEach 反序遍历 -- output 4 3 2 1
-[datas reverseEach:^(id obj) {
+NSArray *data = @[@"1",@"2",@"3",@"4"];
+[data reverseEach:^(id obj) {
 	NSLog(@"%@",obj);
 }];
 
 //eachTimes遍历 带数组索引 -- output 1:0 2:1 3:2 4:3
-[datas eachTimes:^(id obj, NSUInteger index) {
+NSArray *data = @[@"1",@"2",@"3",@"4"];
+[data eachTimes:^(id obj, NSUInteger index) {
  	NSLog(@"%@:%ld",obj, index);
 }];
 
 //reverseEachTimes 反序遍历 -- output 4:3 3:2 2:1 1:0
-[datas reverseEachTimes:^(id obj, NSUInteger index) {
+NSArray *data = @[@"1",@"2",@"3",@"4"];
+[data reverseEachTimes:^(id obj, NSUInteger index) {
  	NSLog(@"%@:%ld",obj, index);
 }];
 
-//apply异步遍历 用于处理大量数据 无法保证顺序
+//apply异步遍历 用于处理大量数据 无法保证顺序 2 3 1 4...
+NSArray *data = @[@"1",@"2",@"3",@"4"];
 [datas apply:^(id obj) {
   NSLog(@"%@",obj);
 }];
        
 //map -- output [1个,2个,3个,4个]
+NSArray *data = @[@"1",@"2",@"3",@"4"];
 NSArray *data1 =
 data.map(^id (id obj){
   return [obj stringByAppendingString:@"个"];
@@ -38,8 +44,9 @@ data.map(^id (id obj){
 NSLog(@"%@",data1);
 
 //map filter -- output [3,4]
+NSArray *data = @[@"10",@"20",@"30",@"40"];
 NSArray *data2 =
-data1.map(^id (id obj){
+data.map(^id (id obj){
   return [obj substringFromIndex:0];
 })
 .filter(^BOOL (id obj){
@@ -47,23 +54,31 @@ data1.map(^id (id obj){
 });
 NSLog(@"%@",data2);
 
-//reduce -- output 9
+//reduce -- output 12
+NSArray *data = @[@"1",@"2",@"3",@"4"];
 id result =
-[data2 reduce:@"2" with:^id(id a, id b) {
+[data reduce:@"2" with:^id(id a, id b) {
   return @([a integerValue] + [b integerValue]);
 }];
 NSLog(@"%@",result);
 
 //将数组中字符串用某个字符聚合 -- output @"1:2:3:4"
-NSString *resultStr = [datas join:@":"];
+NSArray *data = @[@"1",@"2",@"3",@"4"];
+NSString *resultStr = data.join(@":");
 NSLog(@"%@",resultStr);
+
+//连接数组 -- output @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8"]
+NSArray *data = @[@"1",@"2",@"3",@"4"];
+NSLog(@"%@",data.concat(@"5",@"6",@[@"7",@"8"],nil));
+
+//索引
+
 
 //二维矩阵转置 -- output [[1,5,9],[2,6,10],[3,7,11],[4,8,12]]
 NSArray *matrix = 
 @[@[@"1",@"2",@"3",@"4"],
 @[@"5",@"6",@"7",@"8"],
 @[@"9",@"10",@"11",@"12"]];
-
 NSLog(@"%@",[NSArray turn:matrix]);
 ```
 
