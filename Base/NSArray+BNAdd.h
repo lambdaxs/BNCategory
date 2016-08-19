@@ -37,12 +37,11 @@
 - (BOOL)some:(BOOL(^)(id obj))block;
 
 //map
-- (NSArray *(^)(id (^)(id obj)))map;
-- (NSArray *(^)(id (^)(id obj,NSUInteger index)))mapWithIndex;
+- (NSArray *(^)(id))map;
 
 //filter
-- (NSArray *(^)(BOOL (^)(id obj)))filter;
-- (NSArray *(^)(BOOL (^)(id obj,NSUInteger index)))filterWithIndex;
+- (NSArray *(^)(id))filter;
+//- (NSArray *(^)(BOOL (^)(id obj,NSUInteger index)))filterWithIndex;
 
 //reduce
 - (id)reduce:(id)init with:(id (^)(id a, id b))blcok;

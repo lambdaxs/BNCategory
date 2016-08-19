@@ -17,21 +17,21 @@ NSArray *data = @[@"1",@"2",@"3",@"4"];
 	NSLog(@"%@",obj);
 }];
 
-//eachTimes遍历 带数组索引 -- output 1:0 2:1 3:2 4:3
+//forEachWithIndex遍历 带数组索引 -- output 1:0 2:1 3:2 4:3
 NSArray *data = @[@"1",@"2",@"3",@"4"];
-[data eachTimes:^(id obj, NSUInteger index) {
+[data forEachWithIndex:^(id obj, NSUInteger index) {
  	NSLog(@"%@:%ld",obj, index);
 }];
 
-//reverseEachTimes 反序遍历 -- output 4:3 3:2 2:1 1:0
+//reverseEachWithIndex 反序遍历 -- output 4:3 3:2 2:1 1:0
 NSArray *data = @[@"1",@"2",@"3",@"4"];
-[data reverseEachTimes:^(id obj, NSUInteger index) {
+[data reverseEachWithIndex:^(id obj, NSUInteger index) {
  	NSLog(@"%@:%ld",obj, index);
 }];
 
-//apply异步遍历 用于处理大量数据 无法保证顺序 2 3 1 4...
+//asynEach异步遍历 用于处理大量数据 无法保证顺序 2 3 1 4...
 NSArray *data = @[@"1",@"2",@"3",@"4"];
-[datas apply:^(id obj) {
+[datas asynEach:^(id obj) {
   NSLog(@"%@",obj);
 }];
        
@@ -72,7 +72,8 @@ NSArray *data = @[@"1",@"2",@"3",@"4"];
 NSLog(@"%@",data.concat(@"5",@"6",@[@"7",@"8"],nil));
 
 //索引
-
+[@[@1,@2,@3] indexOf:@2]; //1
+[@[@1,@2,@3] indexOf:@4]; //-1
 
 //二维矩阵转置 -- output [[1,5,9],[2,6,10],[3,7,11],[4,8,12]]
 NSArray *matrix = 

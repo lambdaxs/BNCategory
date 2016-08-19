@@ -84,33 +84,85 @@
 }
 
 
-- (NSArray *(^)(id (^)(id)))map {
-    return ^(id (^block)(id)) {
-        NSMutableArray *arr = [NSMutableArray arrayWithCapacity:self.count];
-        [self forEach:^(id obj) {
-            id result = block(obj)?:[NSNull null];
-            [arr addObject:result];
-        }];
-        return [arr copy];
-    };
-}
-
-- (NSArray *(^)(id (^)(id,NSUInteger)))mapWithIndex {
-    return ^(id (^block)(id,NSUInteger)) {
+- (NSArray *(^)(id))map {
+    return ^(id block){
+        
         NSMutableArray *arr = [NSMutableArray arrayWithCapacity:self.count];
         [self forEachWithIndex:^(id obj, NSUInteger index) {
-            id result = block(obj,index)?:[NSNull null];
+            
+            id target = block;
+            const char *_Block_signature(void *);
+            const char *signature = _Block_signature((__bridge void *)target);
+            
+            NSMethodSignature *methodSignature = [NSMethodSignature signatureWithObjCTypes:signature];
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
+            [invocation setTarget:[target copy]];
+            
+            //传入block的参数个数 block本身为第0个参数
+            NSUInteger argsCount = methodSignature.numberOfArguments;
+            if (argsCount == 2){//传一个参数(id obj)
+                [invocation setArgument:&obj atIndex:1];
+            }else{//传两个以上参数(id obj,NSUInteger index)
+                [invocation setArgument:&obj atIndex:1];
+                [invocation setArgument:&index atIndex:2];
+            }
+            [invocation invoke];
+            
+            void *retP = malloc(sizeof(id));
+            //获取返回值
+            [invocation getReturnValue:retP];
+            __unsafe_unretained id returnValue = *((__unsafe_unretained id *)retP);
+            free(retP);
+            
+            id result = returnValue?:[NSNull null];
             [arr addObject:result];
         }];
+        
         return [arr copy];
     };
 }
 
-- (NSArray *(^)(BOOL (^)(id obj)))filter {
-    return ^NSArray *(BOOL (^block)(id obj)){
+//- (NSArray *(^)(id (^)(id,NSUInteger)))mapWithIndex {
+//    return ^(id (^block)(id,NSUInteger)) {
+//        NSMutableArray *arr = [NSMutableArray arrayWithCapacity:self.count];
+//        [self forEachWithIndex:^(id obj, NSUInteger index) {
+//            id result = block(obj,index)?:[NSNull null];
+//            [arr addObject:result];
+//        }];
+//        return [arr copy];
+//    };
+//}
+
+- (NSArray *(^)(id))filter {
+    return ^NSArray *(id block){
         NSMutableArray *arr = [NSMutableArray arrayWithCapacity:self.count];
-        [self forEach:^(id obj) {
-            if (block(obj)) {
+        [self forEachWithIndex:^(id obj, NSUInteger index) {
+            
+            id target = block;
+            const char *_Block_signature(void *);
+            const char *signature = _Block_signature((__bridge void *)target);
+            
+            NSMethodSignature *methodSignature = [NSMethodSignature signatureWithObjCTypes:signature];
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
+            [invocation setTarget:[target copy]];
+            
+            //传入block的参数个数 block本身为第0个参数
+            NSUInteger argsCount = methodSignature.numberOfArguments;
+            if (argsCount == 2){//传一个参数(id obj)
+                [invocation setArgument:&obj atIndex:1];
+            }else{//传两个以上参数(id obj,NSUInteger index)
+                [invocation setArgument:&obj atIndex:1];
+                [invocation setArgument:&index atIndex:2];
+            }
+            [invocation invoke];
+            
+            void *retP = malloc(sizeof(BOOL));
+            //获取返回值
+            [invocation getReturnValue:retP];
+            BOOL returnValue = *((BOOL *)retP);
+            free(retP);
+            
+            if (returnValue) {
                 [arr addObject:obj];
             }
         }];

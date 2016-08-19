@@ -10,7 +10,7 @@
 @implementation NSString (BNAdd)
 
 - (NSString *(^)(NSString *))append {
-    return ^NSString *(NSString *str) {
+    return ^(NSString *str) {
         return [self stringByAppendingString:str];
     };
 }
