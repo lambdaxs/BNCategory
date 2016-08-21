@@ -59,12 +59,12 @@ NSLog(@"%@",data2);
 	NSLog(@"%@==%d",obj,index);//output a=1 b=2 c=3
 });
 
-//新增filter动态闭包实现 去除数组里从第三个元素后大于20的元素
+//新增filter动态闭包实现 保留数组里从第三个元素后大于20的元素
 @[@"11",@"20",@"13",@"34","9"].filter(^BOOL (id obj,NSUInteger index){
-	if (index > 2)}{
+	if (index > 2){
 		return [obj integerValue] > 20;
 	}else {
-		return YES;
+		return NO;
 	}	
 });
 
