@@ -54,6 +54,20 @@ data.map(^id (id obj){
 });
 NSLog(@"%@",data2);
 
+//新增map动态闭包实现
+@[@"a",@"b",@"c"].map(^id (id obj,NSUinteger index){
+	NSLog(@"%@==%d",obj,index);//output a=1 b=2 c=3
+});
+
+//新增filter动态闭包实现 去除数组里从第三个元素后大于20的元素
+@[@"11",@"20",@"13",@"34","9"].filter(^BOOL (id obj,NSUInteger index){
+	if (index > 2)}{
+		return [obj integerValue] > 20;
+	}else {
+		return YES;
+	}	
+});
+
 //reduce -- output 12
 NSArray *data = @[@"1",@"2",@"3",@"4"];
 id result =
@@ -160,14 +174,19 @@ UIButton *btn = [[UIButton alloc]init];
 	NSLog(@"hello");
 }];
 //添加其他事件 UIControlEventTouchDown
-[btn tapped:UIControlEventTouchDown do:(^id sender:{
+[btn on:UIControlEventTouchDown do:(^id sender:{
 	NSLog(@"hello");
 }];
 ```
 
 ###UIView
-```objc
 
+```objc
+//为UIView元素添加点击事件
+UIView *viewa = [UIView new];
+[viewa onCilck:(^UIGestureRecognizer g){
+	//do somthing...
+}];
 ```
 
 ##NSObject
@@ -201,7 +220,6 @@ NSLog(@"%@",self.extraInfo[@"name"]); //输出 xiaos
 //将btn按钮添加到self的管理中
 UIButton *btn = [UIButton new];
 [self setView:btn byId:@"#dateBtn"];
-
 //在其他地方引用
 UIButton *btn = [self viewById:@"#dateBtn"];
 
