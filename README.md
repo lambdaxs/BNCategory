@@ -1,65 +1,74 @@
 # BNCategory
-封装了常用的集合类，NSNumber类，NSString类赋予了函数式的高阶函数
+封装了常用的集合类，NSArray类、NSNumber类、NSString类赋予了函数式的高阶函数
 
 ##NSArray
+####forEach 元素遍历 -- output a b c d
+
 ```objc
-
-
-//forEach 遍历 -- output 1 2 3 4
-NSArray *data = @[@"1",@"2",@"3",@"4"];
-[data forEach:^(id obj) {
+[@[@"a",@"b",@"c",@"d"] forEach:^(id obj) {
 	NSLog(@"%@",obj);
 }];
+```
 
-//reverseEach 反序遍历 -- output 4 3 2 1
-NSArray *data = @[@"1",@"2",@"3",@"4"];
-[data reverseEach:^(id obj) {
+####forEach 带索引的遍历 -- output a=0 b=1 c=2 d=3
+```objc
+[@[@"a",@"b",@"c",@"d"] forEach:^(id obj,NSUInteger index) {
+	NSLog(@"%@=%d",obj,index);
+}];
+```
+
+####reverseEach 反序遍历 -- output d c b a
+```objc
+[@[@"a",@"b",@"c",@"d"] reverseEach:^(id obj) {
 	NSLog(@"%@",obj);
 }];
+```
 
-//forEachWithIndex遍历 带数组索引 -- output 1:0 2:1 3:2 4:3
-NSArray *data = @[@"1",@"2",@"3",@"4"];
-[data forEachWithIndex:^(id obj, NSUInteger index) {
- 	NSLog(@"%@:%ld",obj, index);
+####reverseEach 带索引的反序遍历 -- output d=0 c=1 b=2 a=3
+```objc
+[@[@"a",@"b",@"c",@"d"] reverseEach:^(id obj,NSUInteger index) {
+	NSLog(@"%@=%d",obj,index);
 }];
+```
 
-//reverseEachWithIndex 反序遍历 -- output 4:3 3:2 2:1 1:0
-NSArray *data = @[@"1",@"2",@"3",@"4"];
-[data reverseEachWithIndex:^(id obj, NSUInteger index) {
- 	NSLog(@"%@:%ld",obj, index);
-}];
-
-//asynEach异步遍历 用于处理大量数据 无法保证顺序 2 3 1 4...
-NSArray *data = @[@"1",@"2",@"3",@"4"];
-[datas asynEach:^(id obj) {
+####asynEach异步遍历 用于处理大量数据 无法保证顺序 b a c d
+```objc
+[@[@"a",@"b",@"c",@"d"] asynEach:^(id obj) {
   NSLog(@"%@",obj);
 }];
+```
        
-//map -- output [1个,2个,3个,4个]
-NSArray *data = @[@"1",@"2",@"3",@"4"];
-NSArray *data1 =
-data.map(^id (id obj){
+####map -- output @[@"1个",@"2个",@"3个",@"4个"]
+```objc
+NSArray *data =
+@[@"a",@"b",@"c",@"d"].map(^id (id obj){
   return [obj stringByAppendingString:@"个"];
 });   
-NSLog(@"%@",data1);
+NSLog(@"%@",data);
+```
 
-//map filter -- output [3,4]
+####map filter  取data数组每个元素的第一个字符，然后过滤得到整数值大于2的元素-- output @[@"3",@"4"]
+```objc
 NSArray *data = @[@"10",@"20",@"30",@"40"];
-NSArray *data2 =
+NSArray *result =
 data.map(^id (id obj){
   return [obj substringFromIndex:0];
 })
 .filter(^BOOL (id obj){
   return [obj integerValue] > 2;
 });
-NSLog(@"%@",data2);
+NSLog(@"%@",result);
+```
 
-//新增map动态闭包实现
+####新增map动态闭包实现
+```objc
 @[@"a",@"b",@"c"].map(^id (id obj,NSUinteger index){
 	NSLog(@"%@==%d",obj,index);//output a=1 b=2 c=3
 });
+```
 
-//新增filter动态闭包实现 保留数组里从第三个元素后大于20的元素
+####新增filter动态闭包实现 过滤得到数组里从第三个元素后大于20的元素
+```objc
 @[@"11",@"20",@"13",@"34","9"].filter(^BOOL (id obj,NSUInteger index){
 	if (index > 2){
 		return [obj integerValue] > 20;
@@ -67,29 +76,38 @@ NSLog(@"%@",data2);
 		return NO;
 	}	
 });
+```
 
-//reduce -- output 12
+####reduce -- output @12
+```objc
 NSArray *data = @[@"1",@"2",@"3",@"4"];
 id result =
 [data reduce:@"2" with:^id(id a, id b) {
   return @([a integerValue] + [b integerValue]);
 }];
 NSLog(@"%@",result);
+```
 
-//将数组中字符串用某个字符聚合 -- output @"1:2:3:4"
+####将数组中字符串用某个字符聚合 -- output @"1+2+3+4"
+```objc
 NSArray *data = @[@"1",@"2",@"3",@"4"];
-NSString *resultStr = data.join(@":");
+NSString *resultStr = data.join(@"+");
 NSLog(@"%@",resultStr);
+```
 
-//连接数组 -- output @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8"]
-NSArray *data = @[@"1",@"2",@"3",@"4"];
-NSLog(@"%@",data.concat(@"5",@"6",@[@"7",@"8"],nil));
+####连接数组 -- output @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8"]
+```objc
+NSLog(@"%@",@[@"1",@"2",@"3",@"4"].concat(@"5",@"6",@[@"7",@"8"],nil));
+```
 
-//索引
-[@[@1,@2,@3] indexOf:@2]; //1
-[@[@1,@2,@3] indexOf:@4]; //-1
+####索引
+```objc
+[@[@1,@2,@3,@4] indexOf:@2]; //1
+[@[@1,@2,@3,@4] indexOf:@5]; //-1
+```
 
-//二维矩阵转置 -- output [[1,5,9],[2,6,10],[3,7,11],[4,8,12]]
+####二维矩阵转置 -- output [[1,5,9],[2,6,10],[3,7,11],[4,8,12]]
+```objc
 NSArray *matrix = 
 @[@[@"1",@"2",@"3",@"4"],
 @[@"5",@"6",@"7",@"8"],
