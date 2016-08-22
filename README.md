@@ -169,7 +169,35 @@ NSLog(@"%@",@"1,2,3".replace(@",",@"="));
 
 //拼接字符串 output -- xiaos.hello
 NSLog(@"%@",@"xiaos".append(@",").append(@"xiaos"));
+
+NSLog(@"%@",@"abcde".substr(1,2));	//bc
+NSLog(@"%@",@"abcde".subback(3));//cde
+NSLog(@"%@",@"abcde".subfront(3));//abc
+NSLog(@"%@",@"abcde".indexOf(3));//d
+NSLog(@"%d",[@"a" hex]);//10
 ```
+
+####16进制的a转为10进制
+```obj
+NSLog(@"%d",[@"a" itoa:16]);//10
+```
+
+####2进制的101010转为10进制
+```objc
+NSLog(@"%d",[@"101010" itoa:2]);//42
+```
+
+####十六进制与十进制之间的转换
+```obj
+NSLog(@"%@",[@"15" hexStr]);	//@"f"
+NSLog(@"%@",[@"16" hexStr]);	//@"10"
+NSLog(@"%@",[@"17" hexStr]);	//@"11"
+    
+NSLog(@"%d",[@"a" hex]);		//10
+NSLog(@"%d",[@"b" hex]);		//11
+NSLog(@"%d",[@"ff" hex]);		//255
+```
+
 ##NSTimer
 ```objc
 //创建一个自动运行的定时器
