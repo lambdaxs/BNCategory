@@ -198,7 +198,6 @@ UIButton *btn = [[UIButton alloc]init];
 ```
 
 ###UIView
-
 ```objc
 //为UIView元素添加点击事件
 UIView *viewa = [UIView new];
@@ -213,8 +212,8 @@ UIView *viewa = [UIView new];
 Person *p = [[Person alloc] initWithName:@"xiaos"];
 //监听p.name的改变 此观察者自动释放 若需提前释放 [p unWatchForKeyPath:@"name"] 全部释放[p unWathAll]
 [p watchForKeyPath:@"name" block:^(id obj, id oldVal, id newVal) {
-       NSLog(@"%@:%@",oldVal,newVal); 
-    }];
+	NSLog(@"%@:%@",oldVal,newVal); 
+}];
    
 
 //用运行时为Object绑定了一个字典属性，用于在一些场景下的多参数传值。例如：
@@ -260,7 +259,6 @@ UILabel *label = [UILabel cssLabel:@{
 @"border-width":@1,
 @"border-raduis":@"3"
 }];
-
 ```
 
 
