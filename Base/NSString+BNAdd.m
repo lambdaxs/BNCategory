@@ -71,25 +71,25 @@
     };
 }
 
-+ (NSString *)hexStr:(NSUInteger)num {
+- (NSString *)hexStr {
     //2的64次方转化为十六进制的位数时为16位
     char data[17];
-    sprintf(data, "%x",(int)num);
+    int num = self.intValue;
+    sprintf(data, "%x",num);
     return [NSString stringWithCString:data encoding:NSUTF8StringEncoding];
 }
 
-- (NSUInteger (^)())hex {
-    return ^NSUInteger {
-        UInt64 mac1 =  strtoul([self UTF8String], 0, 16);
-        return (NSUInteger)mac1;
-    };
+- (NSUInteger)hex {
+    UInt64 mac1 =  strtoul([self UTF8String], 0, 16);
+    return (NSUInteger)mac1;
+    
 }
 
-- (NSUInteger (^)(NSInteger s))itoa {
-    return ^NSUInteger (NSInteger s){
-        UInt64 mac1 =  strtoul([self UTF8String], 0, (int)s);
-        return (NSUInteger)mac1;
-    };
+- (NSUInteger)itoa:(NSInteger)s {
+    
+    UInt64 mac1 =  strtoul([self UTF8String], 0, (int)s);
+    return (NSUInteger)mac1;
+    
 }
 
 @end
