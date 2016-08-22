@@ -174,11 +174,10 @@ NSLog(@"%@",@"abcde".substr(1,2));	//bc
 NSLog(@"%@",@"abcde".subback(3));//cde
 NSLog(@"%@",@"abcde".subfront(3));//abc
 NSLog(@"%@",@"abcde".indexOf(3));//d
-NSLog(@"%d",[@"a" hex]);//10
 ```
 
 ####16进制的a转为10进制
-```obj
+```objc
 NSLog(@"%d",[@"a" itoa:16]);//10
 ```
 
@@ -188,7 +187,8 @@ NSLog(@"%d",[@"101010" itoa:2]);//42
 ```
 
 ####十六进制与十进制之间的转换
-```obj
+```objc
+NSLog(@"%d",[@"a" hex]);//10
 NSLog(@"%@",[@"15" hexStr]);	//@"f"
 NSLog(@"%@",[@"16" hexStr]);	//@"10"
 NSLog(@"%@",[@"17" hexStr]);	//@"11"
