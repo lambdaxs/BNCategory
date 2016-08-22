@@ -21,12 +21,12 @@
 
 //遍历操作
 //正序遍历
-- (void)forEach:(void (^)(id obj))block;
-- (void)forEachWithIndex:(void (^)(id obj, NSUInteger index))block;
+- (void)forEach:(id)block;
+//- (void)forEachWithIndex:(void (^)(id obj, NSUInteger index))block;
 
 //反序遍历
-- (void)reverseEach:(void (^)(id obj))block;
-- (void)reverseEachWithIndex:(void (^)(id obj, NSUInteger index))block;
+- (void)reverseEach:(id)block;
+//- (void)reverseEachWithIndex:(void (^)(id obj, NSUInteger index))block;
 
 //异步遍历
 - (void)asynEach:(void (^)(id obj))blcok;

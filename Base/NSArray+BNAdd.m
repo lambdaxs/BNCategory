@@ -53,27 +53,70 @@
 
 
 
-- (void)forEach:(void (^)(id))block {
+- (void)forEach:(id)block {
+
+    id target = block;
+    const char *_Block_signature(void *);
+    const char *signature = _Block_signature((__bridge void *)target);
+    
+    NSMethodSignature *methodSignature = [NSMethodSignature signatureWithObjCTypes:signature];
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
+    [invocation setTarget:[target copy]];
+    //传入block的参数个数 block本身为第0个参数
+    NSUInteger argsCount = methodSignature.numberOfArguments;
+    
     [self enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        block(obj);
+        __weak NSArray *weakSelf = (__bridge NSArray *)((__bridge void*)self);
+        switch (argsCount) {
+            case 2://传一个参数(id obj)
+                [invocation setArgument:&obj atIndex:1];
+                break;
+            case 3://传两个参数(id obj,NSUInteger index)
+                [invocation setArgument:&obj atIndex:1];
+                [invocation setArgument:&idx atIndex:2];
+                break;
+            case 4://传两个参数(id obj,NSUInteger index,NSArray *this)
+                [invocation setArgument:&obj atIndex:1];
+                [invocation setArgument:&idx atIndex:2];
+                [invocation setArgument:&weakSelf atIndex:3];
+            default:
+                break;
+        }
+        
+        [invocation invoke];
     }];
 }
 
-- (void)reverseEach:(void (^)(id))block {
+- (void)reverseEach:(id)block {
+    
+    id target = block;
+    const char *_Block_signature(void *);
+    const char *signature = _Block_signature((__bridge void *)target);
+    
+    NSMethodSignature *methodSignature = [NSMethodSignature signatureWithObjCTypes:signature];
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
+    [invocation setTarget:[target copy]];
+    //传入block的参数个数 block本身为第0个参数
+    NSUInteger argsCount = methodSignature.numberOfArguments;
+    
     [self enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        block(obj);
-    }];
-}
-
-- (void)forEachWithIndex:(void (^)(id obj, NSUInteger index))block {
-    [self enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        block(obj,idx);
-    }];
-}
-
-- (void)reverseEachWithIndex:(void (^)(id obj, NSUInteger index))block {
-    [self enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        block(obj,idx);
+        __weak NSArray *weakSelf = (__bridge NSArray *)((__bridge void*)self);
+        switch (argsCount) {
+            case 2://传一个参数(id obj)
+                [invocation setArgument:&obj atIndex:1];
+                break;
+            case 3://传两个参数(id obj,NSUInteger index)
+                [invocation setArgument:&obj atIndex:1];
+                [invocation setArgument:&idx atIndex:2];
+                break;
+            case 4://传两个参数(id obj,NSUInteger index,NSArray *this)
+                [invocation setArgument:&obj atIndex:1];
+                [invocation setArgument:&idx atIndex:2];
+                [invocation setArgument:&weakSelf atIndex:3];
+            default:
+                break;
+        }
+        [invocation invoke];
     }];
 }
 
@@ -88,7 +131,7 @@
     return ^(id block){
         
         NSMutableArray *arr = [NSMutableArray arrayWithCapacity:self.count];
-        [self forEachWithIndex:^(id obj, NSUInteger index) {
+        [self forEach:^(id obj, NSUInteger index) {
             
             id target = block;
             const char *_Block_signature(void *);
@@ -136,7 +179,7 @@
 - (NSArray *(^)(id))filter {
     return ^NSArray *(id block){
         NSMutableArray *arr = [NSMutableArray arrayWithCapacity:self.count];
-        [self forEachWithIndex:^(id obj, NSUInteger index) {
+        [self forEach:^(id obj, NSUInteger index) {
             
             id target = block;
             const char *_Block_signature(void *);
@@ -173,7 +216,7 @@
 - (NSArray *(^)(BOOL (^)(id obj,NSUInteger index)))filterWithIndex {
     return ^NSArray *(BOOL (^block)(id obj,NSUInteger index)){
         NSMutableArray *arr = [NSMutableArray arrayWithCapacity:self.count];
-        [self forEachWithIndex:^(id obj, NSUInteger index) {
+        [self forEach:^(id obj, NSUInteger index) {
             if (block(obj,index)) {
                 [arr addObject:obj];
             }
