@@ -22,7 +22,7 @@
 
 - (NSString *(^)(NSUInteger))subfront;
 
-- (NSString *(^)(NSUInteger))indexOf;
+- (NSString *(^)(NSUInteger))charAt;
 
 - (NSUInteger)hex;
 

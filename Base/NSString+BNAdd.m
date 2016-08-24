@@ -55,7 +55,7 @@
 }
 
 - (NSString *(^)(NSUInteger))subfront {
-    return ^NSString *(NSUInteger index){
+    return ^(NSUInteger index){
         if (index >= self.length) {
             return self;
         }
@@ -63,8 +63,8 @@
     };
 }
 
-- (NSString *(^)(NSUInteger))indexOf{
-    return ^NSString *(NSUInteger index){
+- (NSString *(^)(NSUInteger))charAt{
+    return ^(NSUInteger index){
         NSAssert(index < self.length, @"下标越界");
         unichar charStr = [self characterAtIndex:index];
         return [NSString stringWithFormat:@"%c",charStr];
