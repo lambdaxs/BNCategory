@@ -12,17 +12,17 @@
 
 @interface Lambda : NSObject
 
-- (CurryBlock)pipe:(CurryBlock)f
++ (CurryBlock)pipe:(CurryBlock)f
                  and:(CurryBlock)g;
 
-- (CurryBlock)pipe:(CurryBlock)f
++ (CurryBlock)pipe:(CurryBlock)f
                  and:(CurryBlock)g
                  and:(CurryBlock)h;
 
-- (CurryBlock)compose:(id(^)(id obj))f
++ (CurryBlock)compose:(id(^)(id obj))f
                    and:(id(^)(id obj))g;
 
-- (CurryBlock)compose:(CurryBlock)f
++ (CurryBlock)compose:(CurryBlock)f
                     and:(CurryBlock)g
                     and:(CurryBlock)h;
 

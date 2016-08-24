@@ -10,21 +10,21 @@
 
 @implementation Lambda
 
-- (CurryBlock)compose:(CurryBlock)f
++ (CurryBlock)compose:(CurryBlock)f
                     and:(CurryBlock)g {
     return ^id(id param) {
         return f(g(param));
     };
 }
 
-- (CurryBlock)pipe:(CurryBlock)f
++ (CurryBlock)pipe:(CurryBlock)f
                  and:(CurryBlock)g {
     return ^id(id param){
         return g(f(param));
     };
 }
 
-- (CurryBlock)compose:(CurryBlock)f
++ (CurryBlock)compose:(CurryBlock)f
                     and:(CurryBlock)g
                     and:(CurryBlock)h {
     return ^id(id param) {
@@ -32,7 +32,7 @@
     };
 }
 
-- (CurryBlock)pipe:(CurryBlock)f
++ (CurryBlock)pipe:(CurryBlock)f
                  and:(CurryBlock)g
                  and:(CurryBlock)h{
     return ^id(id param){
