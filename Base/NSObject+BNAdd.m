@@ -62,6 +62,19 @@ static void *const XWKVOSemaphoreKey = "XWKVOSemaphoreKey";
 
 @implementation NSObject (BNAdd)
 
+- (id(^)(CurryBlock,CurryBlock))compose {
+    return ^id(CurryBlock b1,CurryBlock b2) {
+        return b1(b2(self));
+    };
+}
+
+- (id(^)(CurryBlock,CurryBlock))pipe {
+    return ^id(CurryBlock b1,CurryBlock b2) {
+        return self.compose(b2,b1);
+    };
+}
+
+
 - (void)setExtraInfo:(NSDictionary *)dict{
     objc_setAssociatedObject(self,&BONC_OBJECT_KEY,dict,OBJC_ASSOCIATION_COPY_NONATOMIC);
 }

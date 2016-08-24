@@ -4,8 +4,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BNMacro.h"
 
 @interface NSObject (BNAdd)
+
+- (id(^)(CurryBlock,CurryBlock))compose;
+- (id(^)(CurryBlock,CurryBlock))pipe;
 
 #pragma mark - 一般用户对象间传值
 - (void)setExtraInfo:(NSDictionary *)dict;
