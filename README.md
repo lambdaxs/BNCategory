@@ -1,54 +1,57 @@
 # BNCategory
 封装了常用的集合类，NSArray类、NSNumber类、NSString类赋予了函数式的高阶函数
+## 索引
+[TOC]
 
 ##NSArray
-####forEach 元素遍历 -- output a b c d
+###forEach 元素遍历
 
 ```objc
 [@[@"a",@"b",@"c",@"d"] forEach:^(id obj) {
-	NSLog(@"%@",obj);
+	NSLog(@"%@",obj);//output a b c d
 }];
 ```
 
-####forEach 带索引的遍历 -- output a=0 b=1 c=2 d=3
+###forEach 带索引的遍历
 ```objc
 [@[@"a",@"b",@"c",@"d"] forEach:^(id obj,NSUInteger index) {
-	NSLog(@"%@=%d",obj,index);
+	NSLog(@"%@=%d",obj,index);//output a=0 b=1 c=2 d=3
 }];
 ```
 
-####reverseEach 反序遍历 -- output d c b a
+###reverseEach 反序遍历
 ```objc
 [@[@"a",@"b",@"c",@"d"] reverseEach:^(id obj) {
-	NSLog(@"%@",obj);
+	NSLog(@"%@",obj);//output d c b a
 }];
 ```
 
-####reverseEach 带索引的反序遍历 -- output d=0 c=1 b=2 a=3
+###reverseEach 带索引的反序遍历
 ```objc
 [@[@"a",@"b",@"c",@"d"] reverseEach:^(id obj,NSUInteger index) {
-	NSLog(@"%@=%d",obj,index);
+	NSLog(@"%@=%d",obj,index);//output d=0 c=1 b=2 a=3
 }];
 ```
 
-####asynEach异步遍历 用于处理大量数据 无法保证顺序 b a c d
+###asynEach异步遍历 用于处理大量数据 
 ```objc
 [@[@"a",@"b",@"c",@"d"] asynEach:^(id obj) {
-  NSLog(@"%@",obj);
+  NSLog(@"%@",obj);//无法保证顺序 b a c d
 }];
 ```
        
-####map -- output @[@"1个",@"2个",@"3个",@"4个"]
+###map
 ```objc
 NSArray *data =
 @[@"a",@"b",@"c",@"d"].map(^id (id obj){
   return [obj stringByAppendingString:@"个"];
 });   
-NSLog(@"%@",data);
+NSLog(@"%@",data);//output @[@"1个",@"2个",@"3个",@"4个"]
 ```
 
-####map filter  取data数组每个元素的第一个字符，然后过滤得到整数值大于2的元素-- output @[@"3",@"4"]
+###map filter组合使用
 ```objc
+//取data数组每个元素的第一个字符，然后过滤得到整数值大于2的元素
 NSArray *data = @[@"10",@"20",@"30",@"40"];
 NSArray *result =
 data.map(^id (id obj){
@@ -57,18 +60,19 @@ data.map(^id (id obj){
 .filter(^BOOL (id obj){
   return [obj integerValue] > 2;
 });
-NSLog(@"%@",result);
+NSLog(@"%@",result);//output @[@"3",@"4"]
 ```
 
-####新增map动态闭包实现
+###新增map动态闭包实现
 ```objc
 @[@"a",@"b",@"c"].map(^id (id obj,NSUinteger index){
 	NSLog(@"%@==%d",obj,index);//output a=1 b=2 c=3
 });
 ```
 
-####新增filter动态闭包实现 过滤得到数组里从第三个元素后大于20的元素
+###新增filter动态闭包实现 
 ```objc
+//过滤得到数组里从第三个元素后大于20的元素
 @[@"11",@"20",@"13",@"34","9"].filter(^BOOL (id obj,NSUInteger index){
 	if (index > 2){
 		return [obj integerValue] > 20;
@@ -78,41 +82,45 @@ NSLog(@"%@",result);
 });
 ```
 
-####reduce -- output @12
+###reduce
 ```objc
 NSArray *data = @[@"1",@"2",@"3",@"4"];
 id result =
 [data reduce:@"2" with:^id(id a, id b) {
   return @([a integerValue] + [b integerValue]);
 }];
-NSLog(@"%@",result);
+NSLog(@"%@",result); //output @12
 ```
 
-####将数组中字符串用某个字符聚合 -- output @"1+2+3+4"
+###join
 ```objc
+//将数组中字符串用某个字符聚合
 NSArray *data = @[@"1",@"2",@"3",@"4"];
 NSString *resultStr = data.join(@"+");
-NSLog(@"%@",resultStr);
+NSLog(@"%@",resultStr);//output @"1+2+3+4"
 ```
 
-####连接数组 -- output @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8"]
+###concat
 ```objc
+//连接数组
 NSLog(@"%@",@[@"1",@"2",@"3",@"4"].concat(@"5",@"6",@[@"7",@"8"],nil));
+//output @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8"]
 ```
 
-####索引
+###indexOf
 ```objc
+//元素索引
 [@[@1,@2,@3,@4] indexOf:@2]; //1
 [@[@1,@2,@3,@4] indexOf:@5]; //-1
 ```
 
-####二维矩阵转置 -- output [[1,5,9],[2,6,10],[3,7,11],[4,8,12]]
+###二维矩阵转置
 ```objc
 NSArray *matrix = 
 @[@[@"1",@"2",@"3",@"4"],
 @[@"5",@"6",@"7",@"8"],
 @[@"9",@"10",@"11",@"12"]];
-NSLog(@"%@",[NSArray turn:matrix]);
+NSLog(@"%@",[NSArray turn:matrix]);//output [[1,5,9],[2,6,10],[3,7,11],[4,8,12]]
 ```
 
 ##NSMutableArry
@@ -122,71 +130,92 @@ NSLog(@"%@",[NSArray turn:matrix]);
 ```
 
 ##NSNumber
+### range
 ```objc
-//output hello hello hello hello
 [@4 times:^{
-  NSLog(@"hello ");
+  NSLog(@"hello ");//output hello hello hello hello
 }];
 
-//output 0 1 2 3 4
 [@5 timesWithIndex:^(NSInteger i) {
-	NSLog(@"%ld ",i);
+	NSLog(@"%ld ",i);//output 0 1 2 3 4
 }];
 
-//output 10 11 12 13 14 15
 [@10 to:15 do:^(NSInteger i) {
-  NSLog(@"%ld ",i);
+  NSLog(@"%ld ",i);//output 10 11 12 13 14 15
 }];
 
-//output 20 19 18 17 16 15
 [@20 to:15 do:^(NSInteger i) {
-	NSLog(@"%ld ",i);
+	NSLog(@"%ld ",i);//output 20 19 18 17 16 15
 }];
+```
 
-//字符串转NSNumber output -- @12
-NSLog(@"%@",[NSNumber numberByString:@"12"]);
+###字符串转NSNumber 
+```objc
+NSLog(@"%@",[NSNumber numberByString:@"12"]);//output -- @12
+```
 
-//NSNumber整数相加 output -- @32
+###NSNumber四则运算
+```objc
+// output -- @32
 NSLog(@"%@",@12.add(@20));
-
 //NSNumber浮点数相加 output -- @32.1
 NSLog(@"%@",@12.add(@20.1));
-
 //NSNumber链式操作  output -- 8.666666
 NSLog(@"%@",(@12).add(@1).mul(@2).div(@3.0));
 ```
 
 ##NSString
+###trim()
 ```objc
 //去掉两端空格 output -- 123
 NSLog(@"%@",@" 123 ".trim());
-
-//以某个字符拆分字符串 output -- [1,2,3]
-NSLog(@"%@",@"1,2,3".split(@","));
-
-//将字符串中的某个字符替换 output -- 1=2=3
-NSLog(@"%@",@"1,2,3".replace(@",",@"="));
-
-//拼接字符串 output -- xiaos.hello
-NSLog(@"%@",@"xiaos".append(@",").append(@"xiaos"));
-
-NSLog(@"%@",@"abcde".substr(1,2));	//bc
-NSLog(@"%@",@"abcde".subback(3));//cde
-NSLog(@"%@",@"abcde".subfront(3));//abc
-NSLog(@"%@",@"abcde".indexOf(3));//d
 ```
 
-####16进制的a转为10进制
+###split()
+```objc
+//以某个字符拆分字符串 output -- [1,2,3]
+NSLog(@"%@",@"1,2,3".split(@","));
+```
+###replace()
+```objc
+//将字符串中的某个字符替换 output -- 1=2=3
+NSLog(@"%@",@"1,2,3".replace(@",",@"="));
+```
+###append()
+```objc
+//拼接字符串 output -- xiaos.hello
+NSLog(@"%@",@"xiaos".append(@",").append(@"xiaos"));
+```
+
+###substr()
+```objc
+NSLog(@"%@",@"abcde".substr(1,2));	//bc
+```
+###subback()
+```objc
+NSLog(@"%@",@"abcde".subback(3));//cde
+```
+###subfront()
+```objc
+NSLog(@"%@",@"abcde".subfront(3));//abc
+```
+###charAt()
+```objc
+NSLog(@"%@",@"abcde".charAt(3));//d
+```
+
+###16进制的a转为10进制
 ```objc
 NSLog(@"%d",[@"a" itoa:16]);//10
 ```
 
-####2进制的101010转为10进制
+###itoa: 
 ```objc
+//2进制的101010转为10进制
 NSLog(@"%d",[@"101010" itoa:2]);//42
 ```
 
-####十六进制与十进制之间的转换
+###十六进制与十进制之间的转换
 ```objc
 NSLog(@"%d",[@"a" hex]);//10
 NSLog(@"%@",[@"15" hexStr]);	//@"f"
@@ -213,19 +242,24 @@ NSTimer *timer =
 [timer invalidate];
 ```
 ##UIButton
+###onClick:
 ```objc
 //为按钮添加点击事件 默认onClick是touchUpInside
 UIButton *btn = [[UIButton alloc]init];
 [btn onClick:(^id sender){
 	NSLog(@"hello");
 }];
+```
+###on:do:
+```objc
 //添加其他事件 UIControlEventTouchDown
 [btn on:UIControlEventTouchDown do:(^id sender:{
 	NSLog(@"hello");
 }];
 ```
 
-###UIView
+##UIView
+###onCilck:
 ```objc
 //为UIView元素添加点击事件
 UIView *viewa = [UIView new];
@@ -235,15 +269,17 @@ UIView *viewa = [UIView new];
 ```
 
 ##NSObject
+###KVO的闭包实现
 ```objc
-//KVO的闭包实现
 Person *p = [[Person alloc] initWithName:@"xiaos"];
 //监听p.name的改变 此观察者自动释放 若需提前释放 [p unWatchForKeyPath:@"name"] 全部释放[p unWathAll]
 [p watchForKeyPath:@"name" block:^(id obj, id oldVal, id newVal) {
 	NSLog(@"%@:%@",oldVal,newVal); 
 }];
-   
+```
 
+###extraInfo属性
+```objc
 //用运行时为Object绑定了一个字典属性，用于在一些场景下的多参数传值。例如：
 UIButton *btn = [[UIButton alloc] init];
 btn.extraInfo = @{@"name":@"xiaos"};
@@ -258,8 +294,10 @@ homeVC.extraInfo = @{@"name":@"xiaos",@"age":@"20"};
 [self.navigationController pushViewController:homeVC animated:YES];
 //在homeVC中即可取extraInfo获取传过来的信息
 NSLog(@"%@",self.extraInfo[@"name"]); //输出 xiaos
+```
 
-
+###setView:byId: && viewById:
+```objc
 //模仿css的ID选择器
 //在controller或者view中 避免在控制器或者View中新建属性
 //将btn按钮添加到self的管理中
@@ -269,7 +307,6 @@ UIButton *btn = [UIButton new];
 UIButton *btn = [self viewById:@"#dateBtn"];
 
 //todo：模仿css的类选择器 增加一组同类型控件的管理
-
 ```
 
 ##DEV 实验性特性
